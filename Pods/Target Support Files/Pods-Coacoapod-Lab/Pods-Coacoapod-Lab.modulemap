@@ -1,0 +1,6 @@
+framework module Pods_Coacoapod_Lab {
+  umbrella header "Pods-Coacoapod-Lab-umbrella.h"
+
+  export *
+  module * { export * }
+}

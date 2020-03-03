@@ -8,6 +8,7 @@
 
 import Foundation
 
+
 struct ResultsWrapper: Codable {
     let results: [User]
 }

@@ -9,6 +9,7 @@ target 'Coacoapod-Lab' do
 	pod 'Alamofire', '~> 5.0'
 	pod 'SnapKit', '~> 5.0.0'
 	pod 'lottie-ios'
+	pod 'Kingfisher'
 
   target 'Coacoapod-LabTests' do
     inherit! :search_paths

@@ -1,8 +1,8 @@
 //
-//  RandomUserCell.swift
+//  DetailView.swift
 //  Coacoapod-Lab
 //
-//  Created by David Lin on 3/2/20.
+//  Created by David Lin on 3/3/20.
 //  Copyright © 2020 David Lin (Passion Proj). All rights reserved.
 //
 
@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Kingfisher
 
-class RandomUserCell: UITableViewCell {
+class DetailView: UIView {
     
     public lazy var userProfileImage : UIImageView = {
         let imageView = UIImageView()
@@ -25,7 +25,7 @@ class RandomUserCell: UITableViewCell {
         label.text = "Person Name"
         label.textColor = #colorLiteral(red: 0.5568627715, green: 0.3529411852, blue: 0.9686274529, alpha: 1)
         label.font = label.font.withSize(20)
-        label.textAlignment = .left
+        label.textAlignment = .center
         return label
     }()
     
@@ -33,12 +33,14 @@ class RandomUserCell: UITableViewCell {
         let label = UILabel()
         label.text = "Person Address"
         label.textColor = .black
-        label.textAlignment = .left
+        label.textAlignment = .center
+        
         return label
     }()
     
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
+    
+    override init(frame: CGRect) {
+        super.init(frame: UIScreen.main.bounds)
         commonInit()
     }
     
@@ -54,43 +56,36 @@ class RandomUserCell: UITableViewCell {
         configureLocationlabel()
     }
     
+
     
-    func configureCell(user: User) {
-        userNameLabel.text = "\(user.name.first) \(user.name.last)"
-        locationLabel.text = "\(user.location.state) \(user.location.city)"
-        guard let imageURL = URL(string: user.picture.medium) else {
-            return
-        }
-        userProfileImage.kf.setImage(with: imageURL)
-    }
     
     
     private func configureUserProfImg() {
         addSubview(userProfileImage)
         userProfileImage.snp.makeConstraints { (make) in
-            make.leading.top.bottom.equalTo(safeAreaLayoutGuide).offset(0)
-            make.width.equalTo(100)
+            make.top.equalTo(safeAreaLayoutGuide).offset(40)
+            make.height.width.equalTo(200)
+            make.centerX.equalTo(safeAreaLayoutGuide.self)
         }
     }
     
     private func configureUserName() {
         addSubview(userNameLabel)
         userNameLabel.snp.makeConstraints { (make) in
-            make.trailing.equalTo(safeAreaLayoutGuide).offset(0)
-            make.top.equalTo(safeAreaLayoutGuide).offset(10)
-            make.leading.equalTo(userProfileImage.snp.trailing).offset(10)
-            
+            make.top.equalTo(userProfileImage.snp.bottom).offset(20)
+            make.leading.trailing.equalTo(safeAreaLayoutGuide).offset(20)
         }
     }
     
     private func configureLocationlabel() {
         addSubview(locationLabel)
         locationLabel.snp.makeConstraints { (make) in
-            make.top.equalTo(userNameLabel.snp.bottom).offset(10)
-            make.trailing.equalTo(safeAreaLayoutGuide)
-            make.leading.equalTo(userProfileImage.snp.trailing).offset(10)
+            make.top.equalTo(userNameLabel.snp.bottom).offset(20)
+            make.leading.trailing.equalTo(safeAreaLayoutGuide).offset(20)
         }
     }
+    
+    
     
     
 }

@@ -11,9 +11,17 @@ import Lottie
 import SnapKit
 
 class MainVC: UIViewController {
-
+    
     private var launchView = LaunchView()
     private var userTabelView = RandomUserTableView()
+    
+    private var allUsers = [User]() {
+        didSet {
+            DispatchQueue.main.async {
+                self.userTabelView.tableView.reloadData()
+            }
+        }
+    }
     
     
     override func loadView() {
@@ -26,7 +34,22 @@ class MainVC: UIViewController {
         view.backgroundColor = .white
         userTabelView.tableView.delegate = self
         userTabelView.tableView.dataSource = self
+        getUsers()
     }
+    
+    private func getUsers() {
+        RandomUserAPIClient.fetchRandomUser { (result) in
+            switch result {
+            case .failure(let error):
+                print("oops no cocktail for you \(error)")
+            case .success(let users):
+                DispatchQueue.main.async {
+                    self.allUsers = users
+                }
+            }
+        }
+    }
+    
     
     
     override func viewWillAppear(_ animated: Bool) {
@@ -50,7 +73,7 @@ class MainVC: UIViewController {
 
 extension MainVC: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        return allUsers.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -58,17 +81,27 @@ extension MainVC: UITableViewDataSource {
             fatalError()
             
         }
-        // TODO:titleLabel.snp.makeConstraints { (make) in
         cell.backgroundColor = .white
+        let user = allUsers[indexPath.row]
+        cell.configureCell(user: user)
         return cell
+
     }
-    
-    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let user = allUsers[indexPath.row]
+        let detailVC = DetailVC(user: user)
+        present(detailVC, animated: true)
+        
+    }
 }
 
 
 extension MainVC: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 50
+        return 100
     }
+
+    
+    
+    
 }
